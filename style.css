@@ -1,0 +1,30 @@
+
+
+body{
+    color: yellow;
+}
+
+.wrapper{
+    background-image: url('./src/assets/background.jpg');
+    height: 100vh;
+
+}
+
+
+.form-control{
+    margin: 20px 0;
+}
+
+.description{
+    display: flex;
+
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.card-body{
+    color: black;
+}
