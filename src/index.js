@@ -4,8 +4,6 @@ const paginator = document.createElement('ul');
 const loader = document.querySelector('.starwars-demo')
 let category;
 
-
-
 categories.forEach(el => {
     el.addEventListener('click', (e) => {
         categories.forEach(el => {
