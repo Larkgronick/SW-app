@@ -1,0 +1,32 @@
+{
+  "name": "sw-app",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000S\u0000W\u0000-\u0000a\u0000p\u0000p\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/webpack",
+    "dev": "./node_modules/.bin/webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Larkgronick/SW-app.git"
+  },
+  "author": "Larkgronick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Larkgronick/SW-app/issues"
+  },
+  "homepage": "https://github.com/Larkgronick/SW-app#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.12.3",
+    "webpack-cli": "^4.3.1"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "path-browserify": "^1.0.1"
+  }
+}
