@@ -6,16 +6,24 @@
 }
 
 .display-4{
-    color: yellow;
+  color: yellow;
+
 }
 
+.message{
+    color: yellow;
+    text-align: center;
+
+}
 
 .form-control{
     margin: 20px 0;
+
 }
 
 .custom-control-label{
     color: white;
+
 }
 
 .description{
@@ -34,15 +42,108 @@
 
 .nav-link{
     border-radius: 20px;
+
 }
+
 .selected{
     background: yellow !important;
+
+}
+
+.badge{
+  /* display: block; */
+  overflow-wrap:  break-word;
+
+}
+
+/* SEARCH */
+
+.search-form{
+  margin-top: 3%;
+  border-radius: 6px;
 }
 
 
-/* STARWARS LOADER */
+form.search-form input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 75%;
+  background: #f1f1f1;
+  border-radius: 6px;
+}
 
 
+form.search-form button {
+  float: left;
+  width: 20%;
+  height: 25%;
+  padding: 10px;
+  margin-left: 5px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-radius: 6px;
+  border-left: none; /* Prevent double borders */
+  cursor: pointer;
+}
+
+form.search-form button:hover {
+  background: #0b7dda;
+}
+
+/* Clear floats */
+form.search-form::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+/* LOADER */
+
+.lds-facebook {
+  display: none;
+  position: relative;
+  top: 10%;
+  left: 45%;
+  width: 800px;
+  height: 800px;
+}
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  background: yellow;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+  left: 8px;
+  animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+  left: 32px;
+  animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+  left: 56px;
+  animation-delay: 0;
+}
+@keyframes lds-facebook {
+  0% {
+    top: 8px;
+    height: 100px;
+  }
+  50%, 100% {
+    top: 24px;
+    height: 50px;
+  }
+}
+
+/* STARWARS IMAGE */
 
 .star {
     animation: star 10s ease-out infinite;
@@ -114,7 +215,7 @@
     height: 17em;
     left: 50%;
     position: absolute;
-    top: 22%;
+    top: 450px;
     transform: translate(-50%, -50%);
     width: 34em;
   }
