@@ -5,17 +5,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./style.css">
+    <link rel="shortcut icon" href="./src/assets/icon.png" type="image/png">
     <title>SW-App</title>
 </head>
 <body>
     <div class="card text-center wrapper">
         <div class="card-header">
-          <h1 class="display-4">Star Wars Pedia</h1>
-          <!-- THEME SWITCHER -->
-          <!-- <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-            <label class="custom-control-label" for="customSwitch1">White side</label>
-          </div> -->
+          <h1 class="display-5">Star Wars Pedia</h1>
           <ul class="nav nav-tabs card-header-tabs nav-justified">
             <li class="nav-item">
               <a class="nav-link active" href="#">People</a>
@@ -36,9 +32,15 @@
                 <a class="nav-link active" href="#">Starships</a>
             </li>
           </ul>
-          <form class="search-form" action="action_page.php">
+          <form class="search-form">
             <input class="search-field" type="text" placeholder="Search.." name="search">
-            <button id="search"><i class="fa fa-search"></i></button>
+            <button id="search"><i class="fa fa-search" ></i></button>
+            <button id="save"><i class="fa fa-save"></i></button>
+            <button id="load"><i class="fa fa-folder"></i></button>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1">
+              <label class="custom-control-label" for="customSwitch1">White side</label>
+            </div>
           </form>
         </div>
         <div class="starwars-demo">
@@ -50,8 +52,6 @@
         </div>  
       </div>    
     </div>
-         
-
     <script src="./dist/bundle.js"></script>
 </body>
 </html> 

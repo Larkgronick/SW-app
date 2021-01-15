@@ -1,18 +1,23 @@
-
-.wrapper{
-    background-image: url('./src/assets/background.jpg');
-    height: 300vh;
+body, .wrapper{
+  background: url('./src/assets/background.jpg') no-repeat center center fixed;
 
 }
 
-.display-4{
+.dark-side{
+  color: cornflowerblue !important;
+  background-color: #0e1621 !important;
+
+}
+
+.white-side{
+  color: black !important;
+  background-color: white !important;
+
+}
+
+.display-5, .message{
   color: yellow;
-
-}
-
-.message{
-    color: yellow;
-    text-align: center;
+  text-align: center;
 
 }
 
@@ -34,11 +39,18 @@
 .pagination {
     display: flex;
     justify-content: center;
+
 }
 
 .card-body{
     color: black;
+
 }
+
+.card-header-tabs{
+  margin: 10px;
+
+} 
 
 .nav-link{
     border-radius: 20px;
@@ -50,17 +62,19 @@
 
 }
 
-.badge{
-  /* display: block; */
-  overflow-wrap:  break-word;
+.cover h5, .cover p{
+  width: 80%;
 
 }
 
 /* SEARCH */
 
 .search-form{
-  margin-top: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   border-radius: 6px;
+
 }
 
 
@@ -69,36 +83,39 @@ form.search-form input[type=text] {
   font-size: 17px;
   border: 1px solid grey;
   float: left;
-  width: 75%;
+  width: 70%;
   background: #f1f1f1;
   border-radius: 6px;
+
 }
 
 
 form.search-form button {
   float: left;
-  width: 20%;
-  height: 25%;
+  width: 50px;
   padding: 10px;
-  margin-left: 5px;
+  margin: 5px;
   background: #2196F3;
   color: white;
   font-size: 17px;
   border: 1px solid grey;
   border-radius: 6px;
-  border-left: none; /* Prevent double borders */
+  border-left: none;
   cursor: pointer;
+
 }
+
 
 form.search-form button:hover {
   background: #0b7dda;
+
 }
 
-/* Clear floats */
 form.search-form::after {
   content: "";
   clear: both;
   display: table;
+
 }
 
 
@@ -111,7 +128,9 @@ form.search-form::after {
   left: 45%;
   width: 800px;
   height: 800px;
+
 }
+
 .lds-facebook div {
   display: inline-block;
   position: absolute;
@@ -119,19 +138,27 @@ form.search-form::after {
   width: 16px;
   background: yellow;
   animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+
 }
+
 .lds-facebook div:nth-child(1) {
   left: 8px;
   animation-delay: -0.24s;
+
 }
+
 .lds-facebook div:nth-child(2) {
   left: 32px;
   animation-delay: -0.12s;
+
 }
+
 .lds-facebook div:nth-child(3) {
   left: 56px;
   animation-delay: 0;
+
 }
+
 @keyframes lds-facebook {
   0% {
     top: 8px;
@@ -147,9 +174,12 @@ form.search-form::after {
 
 .star {
     animation: star 10s ease-out infinite;
+
   }
+
   .wars {
     animation: wars 10s ease-out infinite;
+
   }
   
   @keyframes star {
@@ -209,31 +239,33 @@ form.search-form::after {
     display: flex;
     perspective: 800px;
     transform-style: preserve3d;
-  }
-  
-  .starwars-demo {
     height: 17em;
     left: 50%;
     position: absolute;
-    top: 450px;
+    top: 550px;
     transform: translate(-50%, -50%);
     width: 34em;
+
   }
   
   img {
     width: 100%;
+
   }
   
   .star, .wars, .byline {
     position: absolute;
+
   }
   
   .star {
     top: -0.75em;
+
   }
   
   .wars {
     bottom: -0.5em;
+    
   }
    
   @media only screen and (max-width: 600px) {
