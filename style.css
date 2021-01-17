@@ -1,22 +1,38 @@
+:root {
+  --dark:#0e1621;
+  --dark-font: cornflowerblue; 
+  --white: #ffffff;
+  --white-font: #000;
+  --star-wars: yellow;
+  --search-field: #f1f1f1; 
+  --search-button: #2196F3;
+  --button-hover: #0b7dda;
+  --border: grey;
+
+}
+
+
 body, .wrapper{
-  background: url('./src/assets/background.jpg') no-repeat center center fixed;
+  background: url('./src/assets/background.jpg') no-repeat;
+  background-size: cover;
+  width: 100%;
 
 }
 
 .dark-side{
-  color: cornflowerblue !important;
-  background-color: #0e1621 !important;
+  color: var(--dark-font);
+  background-color: var(--dark) ;
 
 }
 
 .white-side{
-  color: black !important;
-  background-color: white !important;
+  color: var(--white-font) black ;
+  background-color: var(--white) ;
 
 }
 
 .display-5, .message{
-  color: yellow;
+  color: var(--star-wars);
   text-align: center;
 
 }
@@ -27,7 +43,7 @@ body, .wrapper{
 }
 
 .custom-control-label{
-    color: white;
+    color: var(--white);
 
 }
 
@@ -43,7 +59,7 @@ body, .wrapper{
 }
 
 .card-body{
-    color: black;
+    color: var(--white-font);
 
 }
 
@@ -58,7 +74,7 @@ body, .wrapper{
 }
 
 .selected{
-    background: yellow !important;
+    background: var(--star-wars);
 
 }
 
@@ -81,10 +97,10 @@ body, .wrapper{
 form.search-form input[type=text] {
   padding: 10px;
   font-size: 17px;
-  border: 1px solid grey;
+  border: 1px solid var(--border);
   float: left;
   width: 70%;
-  background: #f1f1f1;
+  background: var(--search-field);
   border-radius: 6px;
 
 }
@@ -95,10 +111,10 @@ form.search-form button {
   width: 50px;
   padding: 10px;
   margin: 5px;
-  background: #2196F3;
-  color: white;
+  background: var(--search-button);
+  color: var(--white);
   font-size: 17px;
-  border: 1px solid grey;
+  border: 1px solid var(--border);
   border-radius: 6px;
   border-left: none;
   cursor: pointer;
@@ -107,7 +123,7 @@ form.search-form button {
 
 
 form.search-form button:hover {
-  background: #0b7dda;
+  background: var(--button-hover);
 
 }
 

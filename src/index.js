@@ -1,8 +1,15 @@
-import {loadPeople, loadPlanets, loadFilms, loadSpecies, loadVehicles} from './loadData.js';
+import {generateData, loadPlanets, loadFilms, loadSpecies, loadVehicles} from './loadData.js';
+
+
 
 let category;
 let categorySelected = false;
 let currentPageInfo;
+
+
+const firstPage = 1;
+const apiURL = 'https://www.swapi.tech/api/';
+const searchURL = 'https://swapi.dev/api/';
 
 const cardsField = document.querySelector('.card-body');
 const categories = document.querySelectorAll(`.nav-link`);
@@ -14,6 +21,8 @@ const searchField = document.querySelector('.search-field');
 const save = document.getElementById('save');
 const load = document.getElementById('load');
 const themeSwitcher = document.getElementById('customSwitch1');
+
+
 
 
 window.onload = function loadSavedData() {
@@ -30,15 +39,17 @@ window.onload = function loadSavedData() {
 
 categories.forEach(el => {
     el.addEventListener('click', (e) => {
+    
         categories.forEach(el => {
-            if(el.classList[2]){
+            let linkStyle = el.classList[2];
+            if(linkStyle) {
             el.classList.remove('selected') 
         }});
 
         e.target.classList.add('selected');
         category = el.innerHTML;
 
-        loadCategory(el.innerHTML, 1);
+        loadCategory(el.innerHTML, firstPage);
 
     });
 })
@@ -55,16 +66,18 @@ function loadCategory(category, page) {
     loader.style.display = 'inline-block';
     categorySelected = true;
 
-    fetch(`https://www.swapi.tech/api/${category}?page=${page}&limit=10`)
+    fetch(`${apiURL}${category}?page=${page}&limit=10`)
         .then(res => res.json())
-        .then(data => loadDetails(data, category, page))
-        .then(() => loader.style.display = 'none')
-        .catch(err => notifyByError(err.status));
+        .then(data => {
+            loadDetails(data, category, page);
+            loader.style.display = 'none';
+        })
+        .catch(notifyByError);
 
 }
 
 function loadDetails(data, category, page){
-    if (category !== "Films") {
+    if (category !== 'Films') {
         let pages = data.total_pages;
         let urls = data.results.map(el => el.url);
         let requests = urls.map(url => fetch(url));
@@ -77,7 +90,7 @@ function loadDetails(data, category, page){
             generateCards(info, category);
             generatePagination(pages, page);
         })
-        .catch(err => notifyByError(err))
+        .catch(notifyByError)
 
     } else {
         let info = data.results.map(item => item.properties);
@@ -100,28 +113,8 @@ function generateCards(info, category) {
         }
         cardsContainer.appendChild(card);
 
-        switch (category) {
-            case 'People':
-                loadPeople(info, card, i);
-                break;
-            case 'Planets':
-                loadPlanets(info, card, i);
-                break;  
-            case 'Films':
-                loadFilms(info, card, i);
-                break;
-            case 'Species':
-                loadSpecies(info, card, i);
-                break;    
-            case 'Vehicles':
-                loadVehicles(info, card, i);
-                break;  
-            case 'Starships':
-                loadVehicles(info, card, i);
-                break;     
-            default:
-                break;
-            }
+        generateData(info, card, i, category);
+
         } 
 
 }
@@ -146,29 +139,27 @@ function generatePagination(pages, page) {
         paginator.appendChild(li);
         li.appendChild(a);
 
-        if(i == page){
+        if(i === page){
             li.classList.add('active');
         } 
     }
 }
 
-
 function getSearchData(category, value) {
     cardsField.innerHTML = '';
-    fetch(`https://swapi.dev/api/${category.toLowerCase()}/?search=${value}`)
+    fetch(`${searchURL}${category.toLowerCase()}/?search=${value}`)
     .then(res => res.json())
     .then(data => {
-        if (data.results.length === 0) {
+        if (!data.results.length) {
             showMessage(`Don’t blame me. I’m an interpreter. I’m not supposed to know every ${category.toLowerCase()} in the Galaxy .`)
         }
        
         generateCards(data.results, category);
 
     })
-    .catch(err => console.log(err));
+    .catch(console.log);
 
 }
-
 
 function moveToPage(e){
     let userChoice = e.target.innerText;
@@ -206,8 +197,16 @@ function showMessage(text) {
 }
 
 function saveData() {
-    localStorage.setItem('info', JSON.stringify(currentPageInfo));
-    localStorage.setItem('category', category);
+  let toSave = JSON.stringify(currentPageInfo);
+  let saved = localStorage.getItem('info');
+    
+    if (saved === toSave) {
+        alert('Data is already saved!')
+    } else {
+        localStorage.setItem('info', toSave);
+        localStorage.setItem('category', category);
+        alert('Saved!')
+    }
     
     if (themeSwitcher.checked) {
         localStorage.setItem('theme', 'dark');
@@ -215,19 +214,21 @@ function saveData() {
         localStorage.setItem('theme', 'white');
     }
 
-    alert('Saved!')
-
 }
 
 function loadData() {
-    cardsField.innerHTML = '';
-    introImage.style.display = 'none';
+    let saved = localStorage.getItem('info');
 
-    let info = JSON.parse(localStorage.getItem('info'));
-    let category = localStorage.getItem('category');
+    if (saved !== "undefined") {
+        cardsField.innerHTML = '';
+        introImage.style.display = 'none';
+        
+        let info = JSON.parse(saved);
+        let category = localStorage.getItem('category');
 
-    generateCards(info, category);
-
+        generateCards(info, category);
+    }
+    
 }
 
 function changeTheme(){
