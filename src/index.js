@@ -20,7 +20,7 @@ const search = document.getElementById('search');
 const searchField = document.querySelector('.search-field');
 const save = document.getElementById('save');
 const load = document.getElementById('load');
-const themeSwitcher = document.getElementById('customSwitch1');
+const themeSwitcher = document.getElementById('switch');
 
 
 
@@ -79,8 +79,7 @@ function loadCategory(category, page) {
 function loadDetails(data, category, page){
     if (category !== 'Films') {
         let pages = data.total_pages;
-        let urls = data.results.map(el => el.url);
-        let requests = urls.map(url => fetch(url));
+        let requests = data.results.map(({url}) => fetch(url))
 
         Promise.all(requests)
         .then(responses => Promise.all(responses.map(r => r.json())))
@@ -219,7 +218,7 @@ function saveData() {
 function loadData() {
     let saved = localStorage.getItem('info');
 
-    if (saved !== "undefined") {
+    if (saved) {
         cardsField.innerHTML = '';
         introImage.style.display = 'none';
         
