@@ -1,53 +1,105 @@
+import {generateData, loadPlanets, loadFilms, loadSpecies, loadVehicles} from './loadData.js';
+
+
+
+let category;
+let categorySelected = false;
+let currentPageInfo;
+
+
+const firstPage = 1;
+const apiURL = 'https://www.swapi.tech/api/';
+const searchURL = 'https://swapi.dev/api/';
+
 const cardsField = document.querySelector('.card-body');
 const categories = document.querySelectorAll(`.nav-link`);
 const paginator = document.createElement('ul');
-const loader = document.querySelector('.starwars-demo')
-let category;
+const introImage = document.querySelector('.starwars-demo');
+const loader = document.querySelector('.lds-facebook');
+const search = document.getElementById('search');
+const searchField = document.querySelector('.search-field');
+const save = document.getElementById('save');
+const load = document.getElementById('load');
+const themeSwitcher = document.getElementById('switch');
+
+
+
+
+window.onload = function loadSavedData() {
+    let theme = localStorage.getItem('theme');
+
+    if (theme === 'dark') {
+        themeSwitcher.checked = true;
+    } else {
+        themeSwitcher.checked = false;
+    }
+    changeTheme();
+
+}
 
 categories.forEach(el => {
     el.addEventListener('click', (e) => {
+    
         categories.forEach(el => {
-            if(el.classList[2]){
+            let linkStyle = el.classList[2];
+            if(linkStyle) {
             el.classList.remove('selected') 
         }});
+
         e.target.classList.add('selected');
         category = el.innerHTML;
-        loadCategory(el.innerHTML, 1);
+
+        loadCategory(el.innerHTML, firstPage);
+
     });
 })
 
+paginator.addEventListener('click', moveToPage);
+search.addEventListener('click', searchValue);
+save.addEventListener('click', saveData);
+load.addEventListener('click', loadData);
+themeSwitcher.addEventListener('click', changeTheme);
 
 function loadCategory(category, page) {
     cardsField.innerHTML = '';
-    loader.style.display = 'flex';
-    fetch(`https://www.swapi.tech/api/${category}?page=${page}&limit=10`)
+    introImage.style.display = 'none';
+    loader.style.display = 'inline-block';
+    categorySelected = true;
+
+    fetch(`${apiURL}${category}?page=${page}&limit=10`)
         .then(res => res.json())
-        .then(data => loadDetails(data, category, page))
-        .then(() => loader.style.display = 'none')
-        .catch(err => notifyByError(err.status));
+        .then(data => {
+            loadDetails(data, category, page);
+            loader.style.display = 'none';
+        })
+        .catch(notifyByError);
+
 }
 
 function loadDetails(data, category, page){
-    if (category !== "Films") {
+    if (category !== 'Films') {
         let pages = data.total_pages;
-        let urls = data.results.map(el => el.url);
-        let requests = urls.map(url => fetch(url));
+        let requests = data.results.map(({url}) => fetch(url))
+
         Promise.all(requests)
         .then(responses => Promise.all(responses.map(r => r.json())))
         .then(items => {
             let info = items.map(item => item.result.properties);
+
             generateCards(info, category);
             generatePagination(pages, page);
         })
-        .catch(err => notifyByError(err))
+        .catch(notifyByError)
+
     } else {
         let info = data.results.map(item => item.properties);
-        console.log(info);
+
         generateCards(info, category);
     }
 }
 
-function generateCards(info, category) {
+function generateCards(info, category) {  
+        currentPageInfo = info;
         let cardsContainer = document.createElement('div');
         cardsContainer.className = 'card-columns';
         cardsField.appendChild(cardsContainer);
@@ -55,117 +107,16 @@ function generateCards(info, category) {
     for (let i = 0; i < info.length; i++) {
         let card = document.createElement('div');
         card.className = 'card cover';
+        if (themeSwitcher.checked) {
+            card.classList.add('dark-side');
+        }
         cardsContainer.appendChild(card);
 
-        switch (category) {
-            case 'People':
-                loadPeople(info, card, i);
-                break;
-            case 'Planets':
-                loadPlanets(info, card, i);
-                break;  
-            case 'Films':
-                loadFilms(info, card, i);
-                break;
-            case 'Species':
-                loadSpecies(info, card, i);
-                break;    
-            case 'Vehicles':
-                loadVehicles(info, card, i);
-                break;  
-            case 'Starships':
-                loadVehicles(info, card, i);
-                break;     
-            default:
-                break;
-            }
-        }  
-}
+        generateData(info, card, i, category);
 
-
-function loadName(card, info, i){
-    let name = document.createElement('h5');
-    name.className = 'card-title'
-    name.innerText = info[i].name;
-    card.appendChild(name);
-}
-
-function loadTitle(card, info, i){
-    let name = document.createElement('h5');
-    name.className = 'card-title'
-    name.innerText = info[i].title;
-    card.appendChild(name);
-}
-
-
-
-
-function loadPeople(info, card, i) {
-    loadName(card, info, i);
-    loadProperties(card, "Gender: ", info, 'gender', i);
-    loadProperties(card, "Height: ", info, 'height', i);
-    loadProperties(card, "Mass: ", info, 'mass', i);
-    loadProperties(card, "Hair: ", info, 'hair_color', i);
-    loadProperties(card, "Skin: ", info, 'skin_color', i);
-    loadProperties(card, "Eye: ", info, 'eye_color', i);
-    loadProperties(card, "Birth: ", info, 'birth_year', i);
+        } 
 
 }
-
-
-function loadPlanets(info, card, i) {
-    loadName(card, info, i);
-    loadProperties(card, "Diameter: ", info, 'diameter', i);
-    loadProperties(card, "Gravity: ", info, 'gravity', i);
-    loadProperties(card, "Orbital period: ", info, 'orbital_period', i);
-    loadProperties(card, "Population: ", info, 'population', i);
-    loadProperties(card, "Rotation period: ", info, 'rotation_period', i);
-    loadProperties(card, "Terrain: ", info, 'terrain', i);
-    loadProperties(card, "Climate: ", info, 'climate', i);
-}
-
-function loadFilms(info, card, i) {
-    loadTitle(card, info, i);
-    loadProperties(card, "Episode: ", info, 'episode_id', i);
-    loadProperties(card, "Director: ", info, 'director', i);
-    loadProperties(card, "Opening crawl: ", info, 'opening_crawl', i);
-    loadProperties(card, "Release date: ", info, 'release_date', i);
-}
-
-function loadSpecies(info, card, i) {
-    loadName(card, info, i);
-    loadProperties(card, "Average height: ", info, 'average_height', i);
-    loadProperties(card, "Average lifespan: ", info, 'average_lifespan', i);
-    loadProperties(card, "Classification: ", info, 'classification', i);
-    loadProperties(card, "Eye colors: ", info, 'eye_colors', i);
-    loadProperties(card, "Hair colors: ", info, 'hair_colors', i);
-    loadProperties(card, "Skin colors: ", info, 'skin_colors', i);
-    loadProperties(card, "Language: ", info, 'language', i);
-}
-
-function loadVehicles(info, card, i) {
-    loadName(card, info, i);
-    loadProperties(card, "Length: ", info, 'length', i);
-    loadProperties(card, "Cargo capacity: ", info, 'cargo_capacity', i);
-    loadProperties(card, "Cost in credits: ", info, 'cost_in_credits', i);
-    loadProperties(card, "Crew: ", info, '46', i);
-    loadProperties(card, "Max atmosphering speed: ", info, 'max_atmosphering_speed', i);
-    loadProperties(card, "Model: ", info, 'model', i);
-    loadProperties(card, "Manufacturer: ", info, 'manufacturer', i);
-}
-
-function loadProperties(card, captionText, info, key, i){
-    let caption = document.createElement('p');
-    caption.innerText = captionText;
-    card.appendChild(caption);
-    let value = document.createElement('span');
-    value.className = 'badge badge-secondary';
-    value.innerText = info[i][key]
-    caption.appendChild(value);
-
-}
-
-
 
 function generatePagination(pages, page) { 
     paginator.innerHTML = '';
@@ -177,33 +128,132 @@ function generatePagination(pages, page) {
         li.className ='page-item';
         let a = document.createElement('a');
         a.className = 'page-link';
+
+        if (themeSwitcher.checked) {
+            a.classList.add('dark-side');
+        }
+
         a.innerText = i;
+
         paginator.appendChild(li);
         li.appendChild(a);
-        if(i == page){
+
+        if(i === page){
             li.classList.add('active');
         } 
     }
 }
 
-paginator.addEventListener('click', moveToPage)
+function getSearchData(category, value) {
+    cardsField.innerHTML = '';
+    fetch(`${searchURL}${category.toLowerCase()}/?search=${value}`)
+    .then(res => res.json())
+    .then(data => {
+        if (!data.results.length) {
+            showMessage(`Don’t blame me. I’m an interpreter. I’m not supposed to know every ${category.toLowerCase()} in the Galaxy .`)
+        }
+       
+        generateCards(data.results, category);
+
+    })
+    .catch(console.log);
+
+}
 
 function moveToPage(e){
     let userChoice = e.target.innerText;
     window.scrollTo(0, 0);
-    loadCategory(category, userChoice)
+    loadCategory(category, userChoice);
     
 }
 
 function notifyByError(err) {
-    if(err = 429){
-        let cardsContainer = document.createElement('div');
-        cardsContainer.className = 'card-columns';
-        cardsField.appendChild(cardsContainer);
+    console.log(err);
+    showMessage('Data is in a galaxy far, far away. Please, try later...');
 
-        let message = document.createElement('h5');
-        message.className = 'display-4';
-        message.innerText = 'Data is in a galaxy far, far away. Please, try later...';
-        cardsContainer.appendChild(message);
+}
+
+function searchValue(e) {
+    e.preventDefault();
+    let input = searchField.value;
+
+    if (!categorySelected) {
+        showMessage('Please, select category first');
+    } else {
+        getSearchData(category, input);
     }
+
+}
+
+function showMessage(text) {
+        cardsField.innerHTML = '';
+        introImage.style.display = 'none';
+        let message = document.createElement('h5');
+        message.className = 'message display-4';
+        message.innerText = text;
+        cardsField.appendChild(message);
+
+}
+
+function saveData() {
+  let toSave = JSON.stringify(currentPageInfo);
+  let saved = localStorage.getItem('info');
+    
+    if (saved === toSave) {
+        alert('Data is already saved!')
+    } else {
+        localStorage.setItem('info', toSave);
+        localStorage.setItem('category', category);
+        alert('Saved!')
+    }
+    
+    if (themeSwitcher.checked) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'white');
+    }
+
+}
+
+function loadData() {
+    let saved = localStorage.getItem('info');
+
+    if (saved) {
+        cardsField.innerHTML = '';
+        introImage.style.display = 'none';
+        
+        let info = JSON.parse(saved);
+        let category = localStorage.getItem('category');
+
+        generateCards(info, category);
+    }
+    
+}
+
+function changeTheme(){
+    let navItems = Array.from(document.querySelectorAll('.nav-link'));    
+    let cards = Array.from(document.querySelectorAll('.cover'));   
+    let pages =  Array.from(document.querySelectorAll('.page-link'));    
+    let elements = navItems.concat(cards).concat(pages);
+
+    if(themeSwitcher.checked){
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('white-side');   
+            elements[i].classList.add('dark-side');   
+        }
+        
+        searchField.classList.add('dark-side');
+        searchField.classList.remove('white-side');
+        themeSwitcher.nextElementSibling.textContent = 'Dark Side';
+    } else {
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('dark-side');   
+            elements[i].classList.add('white-side');   
+        }
+        searchField.classList.add('white-side');
+        searchField.classList.remove('dark-side');
+        themeSwitcher.nextElementSibling.textContent = 'White Side';
+
+    }
+
 }

@@ -1,21 +1,50 @@
-
-.wrapper{
-    background-image: url('./src/assets/background.jpg');
-    height: 300vh;
+:root {
+  --dark:#0e1621;
+  --dark-font: cornflowerblue; 
+  --white: #ffffff;
+  --white-font: #000;
+  --star-wars: yellow;
+  --search-field: #f1f1f1; 
+  --search-button: #2196F3;
+  --button-hover: #0b7dda;
+  --border: grey;
 
 }
 
-.display-4{
-    color: yellow;
+
+body, .wrapper{
+  background: url('./src/assets/background.jpg') no-repeat;
+  background-size: cover;
+  width: 100%;
+
 }
 
+.dark-side{
+  color: var(--dark-font);
+  background-color: var(--dark) ;
+
+}
+
+.white-side{
+  color: var(--white-font) black ;
+  background-color: var(--white) ;
+
+}
+
+.display-5, .message{
+  color: var(--star-wars);
+  text-align: center;
+
+}
 
 .form-control{
     margin: 20px 0;
+
 }
 
 .custom-control-label{
-    color: white;
+    color: var(--white);
+
 }
 
 .description{
@@ -26,29 +55,147 @@
 .pagination {
     display: flex;
     justify-content: center;
+
 }
 
 .card-body{
-    color: black;
+    color: var(--white-font);
+
 }
+
+.card-header-tabs{
+  margin: 10px;
+
+} 
 
 .nav-link{
     border-radius: 20px;
+
 }
+
 .selected{
-    background: yellow !important;
+    background: var(--star-wars);
+
+}
+
+.cover h5, .cover p{
+  width: 80%;
+
+}
+
+/* SEARCH */
+
+.search-form{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 6px;
+
 }
 
 
-/* STARWARS LOADER */
+form.search-form input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid var(--border);
+  float: left;
+  width: 70%;
+  background: var(--search-field);
+  border-radius: 6px;
+
+}
 
 
+form.search-form button {
+  float: left;
+  width: 50px;
+  padding: 10px;
+  margin: 5px;
+  background: var(--search-button);
+  color: var(--white);
+  font-size: 17px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  border-left: none;
+  cursor: pointer;
+
+}
+
+
+form.search-form button:hover {
+  background: var(--button-hover);
+
+}
+
+form.search-form::after {
+  content: "";
+  clear: both;
+  display: table;
+
+}
+
+
+/* LOADER */
+
+.lds-facebook {
+  display: none;
+  position: relative;
+  top: 10%;
+  left: 45%;
+  width: 800px;
+  height: 800px;
+
+}
+
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  background: yellow;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+
+}
+
+.lds-facebook div:nth-child(1) {
+  left: 8px;
+  animation-delay: -0.24s;
+
+}
+
+.lds-facebook div:nth-child(2) {
+  left: 32px;
+  animation-delay: -0.12s;
+
+}
+
+.lds-facebook div:nth-child(3) {
+  left: 56px;
+  animation-delay: 0;
+
+}
+
+@keyframes lds-facebook {
+  0% {
+    top: 8px;
+    height: 100px;
+  }
+  50%, 100% {
+    top: 24px;
+    height: 50px;
+  }
+}
+
+/* STARWARS IMAGE */
 
 .star {
     animation: star 10s ease-out infinite;
+
   }
+
   .wars {
     animation: wars 10s ease-out infinite;
+
   }
   
   @keyframes star {
@@ -108,31 +255,33 @@
     display: flex;
     perspective: 800px;
     transform-style: preserve3d;
-  }
-  
-  .starwars-demo {
     height: 17em;
     left: 50%;
     position: absolute;
-    top: 22%;
+    top: 550px;
     transform: translate(-50%, -50%);
     width: 34em;
+
   }
   
   img {
     width: 100%;
+
   }
   
   .star, .wars, .byline {
     position: absolute;
+
   }
   
   .star {
     top: -0.75em;
+
   }
   
   .wars {
     bottom: -0.5em;
+    
   }
    
   @media only screen and (max-width: 600px) {
